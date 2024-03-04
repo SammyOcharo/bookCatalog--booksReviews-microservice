@@ -32,9 +32,19 @@ public class BooksReviewController {
     public ResponseEntity<ReqResponseDTO> listReviewPerBook(@RequestBody BookReviewDTO bookReviewDTO){
         return new ResponseEntity<>(booksReviewService.listReviewPerBook(bookReviewDTO), HttpStatus.OK);
     }
-    //see most liked reviews
-    //filter by likes
-    //see total number of reviews
+
+    //filter books per likes in descending order
+    @GetMapping("filter-per-most-likes/")
+    public ResponseEntity<ReqResponseDTO> filterPerMostLikes(){
+        return new ResponseEntity<>(booksReviewService.filterPerMostLikes(), HttpStatus.OK);
+    }
+
+    //see total number of reviews per book
+    @GetMapping("total-reviews-per-book/")
+    public ResponseEntity<ReqResponseDTO> totalReviewsPerBook(){
+        return new ResponseEntity<>(booksReviewService.totalReviewsPerBook(), HttpStatus.OK);
+    }
+
     //see books with more negative comments
 
 }

@@ -9,4 +9,8 @@ public interface BooksReviewService {
     ReqResponseDTO listAllReviews();
 
     ReqResponseDTO listReviewPerBook(BookReviewDTO bookReviewDTO);
+
+    ReqResponseDTO filterPerMostLikes();
+
+    ReqResponseDTO totalReviewsPerBook();
 }
