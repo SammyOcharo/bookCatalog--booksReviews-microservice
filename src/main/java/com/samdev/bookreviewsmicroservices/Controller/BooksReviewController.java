@@ -1,14 +1,37 @@
 package com.samdev.bookreviewsmicroservices.Controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.samdev.bookreviewsmicroservices.DTO.BookReviewDTO;
+import com.samdev.bookreviewsmicroservices.DTO.ReqResponseDTO;
+import com.samdev.bookreviewsmicroservices.Service.BooksReviewService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/apps/api/v1/books-reviews/")
 public class BooksReviewController {
 
+    private final BooksReviewService booksReviewService;
+
+    public BooksReviewController(BooksReviewService booksReviewService) {
+        this.booksReviewService = booksReviewService;
+    }
+
     //create review
+    @PostMapping("add-review/")
+    public ResponseEntity<ReqResponseDTO> createReview(@RequestBody BookReviewDTO bookReviewDTO){
+        return new ResponseEntity<>(booksReviewService.createReview(bookReviewDTO), HttpStatus.OK);
+    }
     //see all reviews
+    @GetMapping("list-all-reviews/")
+    public ResponseEntity<ReqResponseDTO> listAllReviews(){
+        return new ResponseEntity<>(booksReviewService.listAllReviews(), HttpStatus.OK);
+    }
+    // see all reviews per books
+    @PostMapping("list-all-reviews-per-book/")
+    public ResponseEntity<ReqResponseDTO> listReviewPerBook(@RequestBody BookReviewDTO bookReviewDTO){
+        return new ResponseEntity<>(booksReviewService.listReviewPerBook(bookReviewDTO), HttpStatus.OK);
+    }
     //see most liked reviews
     //filter by likes
     //see total number of reviews
