@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -121,6 +122,67 @@ public class BooksReviewImpl implements BooksReviewService {
 
             return response;
         } catch (Exception e) {
+            response.setResponseMessage("Error retrieving all reviews!");
+            response.setStatusCode(500);
+
+            return response;
+        }
+    }
+
+    @Override
+    public ReqResponseDTO filterPerMostLikes() {
+        ReqResponseDTO response = new ReqResponseDTO();
+
+        try {
+            List<BookReviewDTO> filterPerLikes = bookReviewRepository.findAll()
+                    .stream()
+                    .map(this::mapBookReviewEntityToBookReviewDTO)
+                    .sorted(Comparator.comparing(BookReviewDTO::getLikes).reversed())
+                    .toList();
+
+            response.setBookReviewDTOList(filterPerLikes);
+            response.setStatusCode(200);
+            response.setResponseMessage("Review likes in descending order!");
+
+            return response;
+
+        }catch (Exception e){
+            response.setResponseMessage("Error retrieving all reviews!");
+            response.setStatusCode(500);
+
+            return response;
+        }
+    }
+
+    @Override
+    public ReqResponseDTO totalReviewsPerBook() {
+        ReqResponseDTO response = new ReqResponseDTO();
+
+        try {
+            List<BookReviewDTO> filterPerLikes = bookReviewRepository.findAll()
+                    .stream()
+                    .map(this::mapBookReviewEntityToBookReviewDTO)
+                    .collect(Collectors.groupingBy(BookReviewDTO::getIsbn, Collectors.counting()))
+                    .entrySet()
+                    .stream()
+                    .map(entry -> {
+                        BookReviewDTO bookReviewDTO = new BookReviewDTO();
+                        bookReviewDTO.setIsbn(entry.getKey());
+                        bookReviewDTO.setLikes(entry.getValue().intValue()); // Convert Long to int
+                        return bookReviewDTO;
+                    })
+                    .collect(Collectors.toList());
+
+            System.out.println(filterPerLikes);
+
+
+            response.setBookReviewDTOList(filterPerLikes);
+            response.setStatusCode(200);
+            response.setResponseMessage("total reviews per book!");
+
+            return response;
+
+        }catch (Exception e){
             response.setResponseMessage("Error retrieving all reviews!");
             response.setStatusCode(500);
 
