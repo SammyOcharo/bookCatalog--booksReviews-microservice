@@ -21,6 +21,10 @@ public class ReqResponseDTO {
     private Integer otp;
     private String username;
 
+    private Long totalReviewCount;
+
+    private String BookIsbn;
+
 
     public ReqResponseDTO() {
     }
