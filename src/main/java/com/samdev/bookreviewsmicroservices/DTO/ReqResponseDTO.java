@@ -29,18 +29,15 @@ public class ReqResponseDTO {
     public ReqResponseDTO() {
     }
 
-    public ReqResponseDTO(BookReviewDTO bookReviewDTO,
-                          List<BookReviewDTO> bookReviewDTOList,
-                          String responseMessage,
-                          Integer statusCode,
-                          Integer otp,
-                          String username) {
+    public ReqResponseDTO(BookReviewDTO bookReviewDTO, List<BookReviewDTO> bookReviewDTOList, String responseMessage, Integer statusCode, Integer otp, String username, Long totalReviewCount, String bookIsbn) {
         this.bookReviewDTO = bookReviewDTO;
         this.bookReviewDTOList = bookReviewDTOList;
         this.responseMessage = responseMessage;
         this.statusCode = statusCode;
         this.otp = otp;
         this.username = username;
+        this.totalReviewCount = totalReviewCount;
+        BookIsbn = bookIsbn;
     }
 
     public BookReviewDTO getBookReviewDTO() {
@@ -89,6 +86,22 @@ public class ReqResponseDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Long getTotalReviewCount() {
+        return totalReviewCount;
+    }
+
+    public void setTotalReviewCount(Long totalReviewCount) {
+        this.totalReviewCount = totalReviewCount;
+    }
+
+    public String getBookIsbn() {
+        return BookIsbn;
+    }
+
+    public void setBookIsbn(String bookIsbn) {
+        BookIsbn = bookIsbn;
     }
 }
 

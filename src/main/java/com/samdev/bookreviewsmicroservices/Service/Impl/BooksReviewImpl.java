@@ -165,13 +165,6 @@ public class BooksReviewImpl implements BooksReviewService {
                     .stream()
                     .collect(Collectors.groupingBy(BooksReviewEntity::getIsbn, Collectors.counting()));
 
-
-            System.out.println(totalReviewsPerBook);
-            for(Map.Entry<String, Long> entry: totalReviewsPerBook.entrySet()){
-                String isbn = entry.getKey();
-                Long totalCount = entry.getValue();
-            }
-
             response.setStatusCode(200);
             response.setResponseMessage("total reviews per book!");
 
