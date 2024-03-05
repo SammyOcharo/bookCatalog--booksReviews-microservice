@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -159,24 +160,18 @@ public class BooksReviewImpl implements BooksReviewService {
         ReqResponseDTO response = new ReqResponseDTO();
 
         try {
-            List<BookReviewDTO> filterPerLikes = bookReviewRepository.findAll()
+
+            Map<String, Long> totalReviewsPerBook = bookReviewRepository.findAll()
                     .stream()
-                    .map(this::mapBookReviewEntityToBookReviewDTO)
-                    .collect(Collectors.groupingBy(BookReviewDTO::getIsbn, Collectors.counting()))
-                    .entrySet()
-                    .stream()
-                    .map(entry -> {
-                        BookReviewDTO bookReviewDTO = new BookReviewDTO();
-                        bookReviewDTO.setIsbn(entry.getKey());
-                        bookReviewDTO.setLikes(entry.getValue().intValue()); // Convert Long to int
-                        return bookReviewDTO;
-                    })
-                    .collect(Collectors.toList());
-
-            System.out.println(filterPerLikes);
+                    .collect(Collectors.groupingBy(BooksReviewEntity::getIsbn, Collectors.counting()));
 
 
-            response.setBookReviewDTOList(filterPerLikes);
+            System.out.println(totalReviewsPerBook);
+            for(Map.Entry<String, Long> entry: totalReviewsPerBook.entrySet()){
+                String isbn = entry.getKey();
+                Long totalCount = entry.getValue();
+            }
+
             response.setStatusCode(200);
             response.setResponseMessage("total reviews per book!");
 
