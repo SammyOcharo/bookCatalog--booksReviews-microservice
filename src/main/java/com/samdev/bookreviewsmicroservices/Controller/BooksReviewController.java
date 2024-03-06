@@ -3,6 +3,7 @@ package com.samdev.bookreviewsmicroservices.Controller;
 import com.samdev.bookreviewsmicroservices.DTO.BookReviewDTO;
 import com.samdev.bookreviewsmicroservices.DTO.ReqResponseDTO;
 import com.samdev.bookreviewsmicroservices.Service.BooksReviewService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,11 +41,8 @@ public class BooksReviewController {
     }
 
     //see total number of reviews per book
-    @GetMapping("total-reviews-per-book/")
-    public ResponseEntity<ReqResponseDTO> totalReviewsPerBook(){
-        return new ResponseEntity<>(booksReviewService.totalReviewsPerBook(), HttpStatus.OK);
+    @PostMapping("total-reviews-per-book/")
+    public ResponseEntity<ReqResponseDTO> totalReviewsPerBook(@RequestBody BookReviewDTO bookReviewDTO){
+        return new ResponseEntity<>(booksReviewService.totalReviewsPerBook(bookReviewDTO), HttpStatus.OK);
     }
-
-    //see books with more negative comments
-
 }
