@@ -5,13 +5,11 @@ import com.samdev.bookreviewsmicroservices.DTO.ReqResponseDTO;
 import com.samdev.bookreviewsmicroservices.Entity.BooksReviewEntity;
 import com.samdev.bookreviewsmicroservices.Repository.BookReviewRepository;
 import com.samdev.bookreviewsmicroservices.Service.BooksReviewService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -156,20 +154,38 @@ public class BooksReviewImpl implements BooksReviewService {
     }
 
     @Override
-    public ReqResponseDTO totalReviewsPerBook() {
+    public ReqResponseDTO totalReviewsPerBook(BookReviewDTO bookReviewDTO) {
         ReqResponseDTO response = new ReqResponseDTO();
+        BookReviewDTO bookReviewDTO1 = new BookReviewDTO();
 
         try {
 
-            Map<String, Long> totalReviewsPerBook = bookReviewRepository.findAll()
+            Map<String, Long> totalReviewsPerBook = bookReviewRepository.findByIsbn(bookReviewDTO.getIsbn())
                     .stream()
-                    .collect(Collectors.groupingBy(BooksReviewEntity::getIsbn, Collectors.counting()));
+                    .map(this::mapBookReviewEntityToBookReviewDTO)
+                            .collect(Collectors.groupingBy(
+                                    BookReviewDTO::getIsbn,
+                                    Collectors.counting()
+                            ));
+            // If the map is empty, ISBN does not exist
+            if (totalReviewsPerBook.isEmpty()) {
+                throw new IllegalArgumentException("ISBN does not exist.");
+            }
+
+            bookReviewDTO1.setReviewsPerBook(totalReviewsPerBook);
+
+            response.setBookReviewDTO(bookReviewDTO1);
 
             response.setStatusCode(200);
             response.setResponseMessage("total reviews per book!");
 
             return response;
 
+        }catch (IllegalArgumentException e){
+            response.setResponseMessage(e.getMessage());
+            response.setStatusCode(404);
+
+            return response;
         }catch (Exception e){
             response.setResponseMessage("Error retrieving all reviews!");
             response.setStatusCode(500);

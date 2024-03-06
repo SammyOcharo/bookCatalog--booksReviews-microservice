@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDate;
+import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @SuppressWarnings("unused")
@@ -19,10 +20,12 @@ public class BookReviewDTO {
     private LocalDate reviewTime;
     private String reviewLanguage;
 
+    private Map<String, Long> reviewsPerBook;
+
     public BookReviewDTO() {
     }
 
-    public BookReviewDTO(String isbn, String userId, Integer rating, String reviewText, Integer likes, Integer dislikes, String recommendation, LocalDate reviewTime, String reviewLanguage) {
+    public BookReviewDTO(String isbn, String userId, Integer rating, String reviewText, Integer likes, Integer dislikes, String recommendation, LocalDate reviewTime, String reviewLanguage, Map<String, Long> reviewsPerBook) {
         this.isbn = isbn;
         this.userId = userId;
         this.rating = rating;
@@ -32,6 +35,7 @@ public class BookReviewDTO {
         this.recommendation = recommendation;
         this.reviewTime = reviewTime;
         this.reviewLanguage = reviewLanguage;
+        this.reviewsPerBook = reviewsPerBook;
     }
 
     public String getIsbn() {
@@ -100,6 +104,14 @@ public class BookReviewDTO {
 
     public String getReviewLanguage() {
         return reviewLanguage;
+    }
+
+    public Map<String, Long> getReviewsPerBook() {
+        return reviewsPerBook;
+    }
+
+    public void setReviewsPerBook(Map<String, Long> reviewsPerBook) {
+        this.reviewsPerBook = reviewsPerBook;
     }
 
     public void setReviewLanguage(String reviewLanguage) {
